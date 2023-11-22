@@ -21,6 +21,7 @@ function AdminProductAdd() {
     var err = validateCreateProduct(data);
     if (err === "") {
       const addProduct = async (data) => {
+        console.log({ setData });
         const sendData = {
           data: data,
         };
@@ -50,17 +51,10 @@ function AdminProductAdd() {
 
   // TODO: e la gi
   const handleChange = (e) => {
-    if (e.target.name === "image") {
-      setData({
-        ...data,
-        image: e.target.files,
-      });
-    } else {
-      setData({
-        ...data,
-        [e.target.name]: e.target.value,
-      });
-    }
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
   };
   console.log({ data, env: process.env });
   return (
@@ -127,23 +121,7 @@ function AdminProductAdd() {
             description is required.
           </div>
         </div>
-        <div className="mb-3">
-          <label className="form-label" htmlFor="image">
-            Image
-          </label>
-          <input
-            className="form-control"
-            id="image"
-            name="image"
-            type="file"
-            multiple
-            onChange={handleChange}
-            data-sb-validations="required"
-          />
-          <div className="invalid-feedback" data-sb-feedback="image:required">
-            Image is required.
-          </div>
-        </div>
+
         <div className="mb-3">
           <label className="form-label" htmlFor="price">
             price
