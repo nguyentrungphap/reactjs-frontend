@@ -15,7 +15,7 @@ export default function Product(props) {
     });
     dispath(addToCart({ item: { ...product, count: 1 } }));
   };
-
+console.log({product})
   return (
     <div className="card" style={{ height: "auto" }}>
       <Link to={"/product/" + product.id}>
