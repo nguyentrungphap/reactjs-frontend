@@ -1,5 +1,6 @@
 import React from "react";
 import AppUrl from "../../../../Api/AppUrl";
+import { Link } from "react-router-dom";
 
 function AdminProductItem(props) {
   const { product, handleDelete, handlePublish } = props;
@@ -25,7 +26,7 @@ function AdminProductItem(props) {
         name={product.id}
       />
     );
-
+  console.log();
   return (
     <tr>
       <td>{product.id}</td>
@@ -44,7 +45,9 @@ function AdminProductItem(props) {
       <td>{piblishView}</td>
       <td>
         <i class="fa-solid fa-eye"></i>
-        <i class="fa-solid fa-pen-to-square"></i>
+        <Link to={"/admin/product/edit/" + product.id}>
+          <i class="fa-solid fa-pen-to-square"></i>
+        </Link>
         <button onClick={handleDelete}>
           <i name={product.id} class="fa-solid fa-trash-can"></i>
         </button>

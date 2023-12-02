@@ -3,24 +3,43 @@ import { toast } from "react-toastify";
 import CategorySelect from "./CategorySelect/Index";
 import { validateCreateProduct } from "../../../../utils/validate";
 import productApi from "../../../../Api/productApi";
+import UploadImage from "../../../../utils/UploadImage/Index";
+import AppUrl from "../../../../Api/AppUrl";
+import { useNavigate } from "react-router-dom";
 
 function AdminProductAdd() {
+  const [images, setImages] = useState([]);
+  const navigate = useNavigate();
   const [data, setData] = useState({
     productName: "",
     description: "",
     detail: "",
     category: "",
     price: "",
-    image: ["1", "2"],
+    image: [],
   });
 
-  // TODO: e.preventDefault();
-  // try, catch
+  const addImage = (id, url) => {
+    setData({
+      ...data,
+      image: [...data.image, id],
+    });
+    setImages([
+      ...images,
+      {
+        id: id,
+        url: url,
+      },
+    ]);
+  };
+
   const handleSubmit = (e) => {
+    console.log({ data });
     e.preventDefault();
     var err = validateCreateProduct(data);
     if (err === "") {
       const addProduct = async (data) => {
+        console.log({ setData });
         const sendData = {
           data: data,
         };
@@ -35,8 +54,9 @@ function AdminProductAdd() {
             description: "",
             category: "",
             price: "",
-            image: ["1", "2"],
+            image: [],
           });
+          navigate("/admin/product");
         } catch (error) {
           toast.error("bi loi" + error);
         }
@@ -48,21 +68,41 @@ function AdminProductAdd() {
     }
   };
 
-  // TODO: e la gi
   const handleChange = (e) => {
-    if (e.target.name === "image") {
-      setData({
-        ...data,
-        image: e.target.files,
-      });
-    } else {
-      setData({
-        ...data,
-        [e.target.name]: e.target.value,
-      });
-    }
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
   };
-  console.log({ data, env: process.env });
+  const handleRemove = (e) => {
+    const id = e.target.name;
+    console.log("asdas", e.target.name);
+    setData({
+      ...data,
+      image: data.image.filter((img) => {
+        return img != id;
+      }),
+    });
+    setImages(
+      images.filter((img) => {
+        return img.id != id;
+      })
+    );
+  };
+  const imageUpload =
+    images.length === 0
+      ? "ko co hinh"
+      : images.map((img) => {
+          return (
+            <div>
+              <img src={AppUrl.ImageUrl + img.url} alt="img" name={img.id} />
+              <button name={img.id} onClick={handleRemove}>
+                remove
+              </button>
+            </div>
+          );
+        });
+
   return (
     <div className="container px-5 my-5">
       <form id="createProduct" onSubmit={handleSubmit}>
@@ -92,7 +132,7 @@ function AdminProductAdd() {
           </label>
           <textarea
             className="form-control"
-            id="descriptdetailion"
+            id="description"
             type="text"
             name="detail"
             placeholder="detail"
@@ -127,23 +167,7 @@ function AdminProductAdd() {
             description is required.
           </div>
         </div>
-        <div className="mb-3">
-          <label className="form-label" htmlFor="image">
-            Image
-          </label>
-          <input
-            className="form-control"
-            id="image"
-            name="image"
-            type="file"
-            multiple
-            onChange={handleChange}
-            data-sb-validations="required"
-          />
-          <div className="invalid-feedback" data-sb-feedback="image:required">
-            Image is required.
-          </div>
-        </div>
+
         <div className="mb-3">
           <label className="form-label" htmlFor="price">
             price
@@ -177,6 +201,10 @@ function AdminProductAdd() {
           </button>
         </div>
       </form>
+      <div className="img-upload">
+        <UploadImage addImage={addImage} />
+        {imageUpload}
+      </div>
     </div>
   );
 }

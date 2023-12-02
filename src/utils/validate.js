@@ -7,7 +7,6 @@ export const validateCreateProduct = (data) => {
     errPassMsg += "Giá sản phẩm phải trong khoảng 0-1000000<br />";
   if (data.description === "") errPassMsg += "Bạn cần nhập tên sản phẩm <br />";
   if (data.image[0] === "") errPassMsg += "Bạn cần hình ảnh sản phẩm <br />";
-  if (data.image[1] === "") errPassMsg += "Bạn cần hình ảnh sản phẩm <br />";
 
   return errPassMsg;
 };
