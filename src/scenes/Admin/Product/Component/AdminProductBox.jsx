@@ -7,7 +7,6 @@ import productApi from "../../../../Api/productApi";
 import { Link, useParams } from "react-router-dom";
 import Pagination from "../../../../components/Paginate.jsx";
 import { toast } from "react-toastify";
-import SelectBox from "./SelectBox.jsx/Index.jsx";
 import CategorySelect from "./CategorySelect/Index.jsx";
 function AdminProductBox() {
   const [products, setProducts] = useState({});

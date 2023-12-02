@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 
-function UploadImage() {
+function UploadImage(porp) {
+  const { addImage } = porp;
   const [file, setFile] = useState(null);
   console.log({ file });
 
@@ -28,6 +29,7 @@ function UploadImage() {
     console.log({ id });
     console.log({ url });
     console.log("response", response);
+    addImage(id, url);
   };
 
   return (

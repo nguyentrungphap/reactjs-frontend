@@ -3,8 +3,13 @@ import { toast } from "react-toastify";
 import CategorySelect from "./CategorySelect/Index";
 import { validateCreateProduct } from "../../../../utils/validate";
 import productApi from "../../../../Api/productApi";
+import UploadImage from "../../../../utils/UploadImage/Index";
+import AppUrl from "../../../../Api/AppUrl";
+import { useNavigate } from "react-router-dom";
 
 function AdminProductAdd() {
+  const [images, setImages] = useState([]);
+  const navigate = useNavigate();
   const [data, setData] = useState({
     productName: "",
     description: "",
@@ -14,8 +19,20 @@ function AdminProductAdd() {
     image: ["1", "2"],
   });
 
-  // TODO: e.preventDefault();
-  // try, catch
+  const addImage = (id, url) => {
+    setData({
+      ...data,
+      image: [...data.image, id],
+    });
+    setImages([
+      ...images,
+      {
+        id: id,
+        url: url,
+      },
+    ]);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     var err = validateCreateProduct(data);
@@ -38,6 +55,7 @@ function AdminProductAdd() {
             price: "",
             image: ["1", "2"],
           });
+          navigate("/admin/product");
         } catch (error) {
           toast.error("bi loi" + error);
         }
@@ -49,14 +67,40 @@ function AdminProductAdd() {
     }
   };
 
-  // TODO: e la gi
   const handleChange = (e) => {
     setData({
       ...data,
       [e.target.name]: e.target.value,
     });
   };
-  console.log({ data, env: process.env });
+  const handleRemove = (e) => {
+    const id = e.target.name;
+    console.log("asdas", e.target.name);
+    setData({
+      ...data,
+      image: data.image.filter((img) => {
+        return img != id;
+      }),
+    });
+    setImages(
+      images.filter((img) => {
+        return img.id != id;
+      })
+    );
+  };
+  const imageUpload =
+    images.length === 0
+      ? "ko co hinh"
+      : images.map((img) => {
+          return (
+            <div>
+              <img src={AppUrl.ImageUrl + img.url} alt="img" name={img.id} />
+              <button name={img.id} onClick={handleRemove}>
+                remove
+              </button>
+            </div>
+          );
+        });
   return (
     <div className="container px-5 my-5">
       <form id="createProduct" onSubmit={handleSubmit}>
@@ -155,6 +199,10 @@ function AdminProductAdd() {
           </button>
         </div>
       </form>
+      <div className="img-upload">
+        <UploadImage addImage={addImage} />
+        {imageUpload}
+      </div>
     </div>
   );
 }
