@@ -26,7 +26,7 @@ function AdminProductItem(props) {
         name={product.id}
       />
     );
-
+  console.log();
   return (
     <tr>
       <td>{product.id}</td>

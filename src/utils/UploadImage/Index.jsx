@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 
-function UploadImage(porp) {
-  const { addImage } = porp;
+function UploadImage(props) {
+  const { addImage } = props;
   const [file, setFile] = useState(null);
   console.log({ file });
 

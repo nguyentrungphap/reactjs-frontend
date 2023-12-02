@@ -25,7 +25,7 @@ function AdminProductBox() {
     publicationState: viewOption,
   };
   // -----------------------------------
-
+  console.log({ products });
   const handleSelect = (e) => {
     setViewOption(e.target.value);
   };

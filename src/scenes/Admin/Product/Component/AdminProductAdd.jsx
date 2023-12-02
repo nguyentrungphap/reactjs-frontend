@@ -16,7 +16,7 @@ function AdminProductAdd() {
     detail: "",
     category: "",
     price: "",
-    image: ["1", "2"],
+    image: [],
   });
 
   const addImage = (id, url) => {
@@ -34,6 +34,7 @@ function AdminProductAdd() {
   };
 
   const handleSubmit = (e) => {
+    console.log({ data });
     e.preventDefault();
     var err = validateCreateProduct(data);
     if (err === "") {
@@ -53,7 +54,7 @@ function AdminProductAdd() {
             description: "",
             category: "",
             price: "",
-            image: ["1", "2"],
+            image: [],
           });
           navigate("/admin/product");
         } catch (error) {
@@ -101,6 +102,7 @@ function AdminProductAdd() {
             </div>
           );
         });
+
   return (
     <div className="container px-5 my-5">
       <form id="createProduct" onSubmit={handleSubmit}>
@@ -130,7 +132,7 @@ function AdminProductAdd() {
           </label>
           <textarea
             className="form-control"
-            id="descriptdetailion"
+            id="description"
             type="text"
             name="detail"
             placeholder="detail"
